@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <h3 class="text-center">Cadastrar</h3>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="newUsername">Usuário</label>
+                    <input type="text" class="form-control" id="newUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Senha</label>
+                    <input type="password" class="form-control" id="newPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            </form>
+            <div id="message" class="text-success text-center mt-3"></div>
+            <div class="text-center mt-2">
+                <a href="index.html">Já tenho uma conta</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const newUsername = document.getElementById('newUsername').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        // Recuperando a lista de usuários do localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Adicionando novo usuário
+        users.push({ username: newUsername, password: newPassword });
+
+        // Armazenando a lista de usuários no localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Mensagem de sucesso
+        document.getElementById('message').innerText = 'Cadastro realizado com sucesso! Agora você pode fazer login.';
+        
+        // Redirecionando para a página de login após 2 segundos
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 2000);
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

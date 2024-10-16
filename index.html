@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="loginContainer">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <h3 class="text-center">Login</h3>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            </form>
+            <div class="text-center mt-2">
+                <a href="register.html" id="registerLink">Cadastrar</a>
+            </div>
+            <div id="message" class="text-danger text-center mt-3"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Sucesso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Login realizado com sucesso!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="okButton">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="successMessage" class="text-center mt-3" style="display:none;">
+    <h2 id="welcomeMessage"></h2>
+    <button class="btn btn-secondary mt-3" id="logoutButton">Logout</button>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Recuperando a lista de usuários do localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Verificando se as credenciais existem na lista
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            // Exibir modal de sucesso
+            $('#successModal').modal('show');
+            // Armazenar o nome de usuário para exibir depois
+            document.getElementById('welcomeMessage').innerText = `Olá ${username}!`;
+        } else {
+            // Mensagem de erro
+            document.getElementById('message').innerText = 'Usuário ou senha inválidos!';
+        }
+    });
+
+    document.getElementById('okButton').addEventListener('click', function() {
+        // Ocultar o formulário de login
+        document.getElementById('loginContainer').style.display = 'none';
+        // Exibir mensagem de sucesso
+        document.getElementById('successMessage').style.display = 'block';
+        // Fechar o modal
+        $('#successModal').modal('hide');
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', function() {
+        // Voltar para a tela de login
+        location.reload(); // Para reiniciar a página
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
